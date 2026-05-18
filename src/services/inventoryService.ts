@@ -5,7 +5,11 @@ import { addDaysToLocalDate, formatLocalDate } from "../utils/expiry";
 const INVENTORY_STORAGE_KEY = "kitchen_inventory";
 
 export function getInventory(): InventoryItem[] {
-  return loadFromStorage<InventoryItem[]>(INVENTORY_STORAGE_KEY, []);
+  const storedInventory = loadFromStorage<unknown>(INVENTORY_STORAGE_KEY, []);
+
+  return Array.isArray(storedInventory)
+    ? (storedInventory as InventoryItem[])
+    : [];
 }
 
 export function saveInventory(items: InventoryItem[]): void {

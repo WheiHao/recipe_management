@@ -3,8 +3,26 @@ function toLocalMidnight(date: Date): Date {
 }
 
 function parseLocalDate(dateString: string): Date {
+  if (!/^\d{4}-\d{2}-\d{2}$/.test(dateString)) {
+    return new Date(Number.NaN);
+  }
+
   const [year, month, day] = dateString.split("-").map(Number);
-  return new Date(year, month - 1, day);
+  const date = new Date(year, month - 1, day);
+
+  if (
+    date.getFullYear() !== year ||
+    date.getMonth() !== month - 1 ||
+    date.getDate() !== day
+  ) {
+    return new Date(Number.NaN);
+  }
+
+  return date;
+}
+
+function isValidDate(date: Date): boolean {
+  return Number.isFinite(date.getTime());
 }
 
 export function formatLocalDate(date: Date): string {
@@ -30,6 +48,10 @@ export function getDaysUntilExpiry(expiryDate?: string): number | null {
   const today = toLocalMidnight(new Date());
   const expiry = toLocalMidnight(parseLocalDate(expiryDate));
   const millisecondsPerDay = 24 * 60 * 60 * 1000;
+
+  if (!isValidDate(expiry)) {
+    return null;
+  }
 
   return Math.round((expiry.getTime() - today.getTime()) / millisecondsPerDay);
 }
