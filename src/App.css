@@ -1,0 +1,201 @@
+* {
+  box-sizing: border-box;
+}
+
+html {
+  overflow-x: hidden;
+}
+
+body {
+  margin: 0;
+  overflow-x: hidden;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI",
+    sans-serif;
+  background: #f6f6f6;
+  color: #222;
+}
+
+button,
+input,
+select {
+  font: inherit;
+}
+
+button {
+  min-height: 40px;
+  padding: 8px 12px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  background: #fff;
+  cursor: pointer;
+}
+
+button:active {
+  transform: scale(0.98);
+}
+
+.app-shell {
+  min-height: 100vh;
+  max-width: 480px;
+  margin: 0 auto;
+  padding-bottom: 72px;
+  background: #fafafa;
+}
+
+.app-main {
+  padding: 16px;
+}
+
+h1 {
+  margin: 0 0 16px;
+  font-size: 28px;
+  line-height: 1.2;
+}
+
+h2 {
+  font-size: 20px;
+  line-height: 1.25;
+}
+
+h3 {
+  font-size: 18px;
+  line-height: 1.25;
+}
+
+p {
+  line-height: 1.5;
+}
+
+.bottom-nav {
+  position: fixed;
+  left: 50%;
+  bottom: 0;
+  z-index: 10;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  width: 100%;
+  max-width: 480px;
+  height: 60px;
+  border-top: 1px solid #ddd;
+  background: #fff;
+  transform: translateX(-50%);
+}
+
+.bottom-nav button {
+  min-height: 60px;
+  border: none;
+  border-radius: 0;
+  background: transparent;
+  font-size: 14px;
+}
+
+.bottom-nav button.active {
+  font-weight: 700;
+  background: #eeeeee;
+}
+
+.inventory-list,
+.recipe-list,
+.recommendation-list,
+.dashboard-card-list {
+  display: grid;
+  gap: 12px;
+}
+
+.inventory-card,
+.recipe-card,
+.recommendation-card,
+.dashboard-card,
+.add-inventory-form {
+  border: 1px solid #ddd;
+  border-radius: 12px;
+  padding: 14px;
+  background: #fff;
+}
+
+.inventory-card h2,
+.recipe-card h2,
+.recommendation-card h2,
+.dashboard-card h3 {
+  margin: 0 0 8px;
+}
+
+.inventory-card p,
+.recipe-card p,
+.recommendation-card p,
+.dashboard-card p {
+  margin: 4px 0;
+}
+
+.add-inventory-form {
+  display: grid;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.add-inventory-form h2 {
+  margin: 0;
+}
+
+.add-inventory-form label,
+.inventory-edit-form label {
+  display: grid;
+  gap: 4px;
+  font-size: 14px;
+}
+
+.add-inventory-form input,
+.add-inventory-form select,
+.inventory-edit-form input {
+  width: 100%;
+  min-height: 40px;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 10px;
+  font-size: 16px;
+  background: #fff;
+}
+
+.add-inventory-form button {
+  min-height: 44px;
+}
+
+.inventory-edit-form {
+  display: grid;
+  gap: 10px;
+}
+
+.button-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.recipe-details {
+  margin-top: 12px;
+}
+
+.recipe-details h3 {
+  margin: 12px 0 6px;
+}
+
+.recipe-details ul,
+.recipe-details ol {
+  padding-left: 20px;
+}
+
+.dashboard-section {
+  margin-top: 16px;
+}
+
+.dashboard-section h2 {
+  margin: 0 0 8px;
+}
+
+@media (min-width: 481px) {
+  .app-shell {
+    border-right: 1px solid #eee;
+    border-left: 1px solid #eee;
+  }
+}

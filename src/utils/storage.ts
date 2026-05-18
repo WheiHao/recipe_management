@@ -1,0 +1,21 @@
+export function loadFromStorage<T>(key: string, fallback: T): T {
+  try {
+    const rawValue = localStorage.getItem(key);
+
+    if (rawValue === null) {
+      return fallback;
+    }
+
+    return JSON.parse(rawValue) as T;
+  } catch {
+    return fallback;
+  }
+}
+
+export function saveToStorage<T>(key: string, value: T): void {
+  try {
+    localStorage.setItem(key, JSON.stringify(value));
+  } catch {
+    // Ignore storage errors so the app does not crash.
+  }
+}
