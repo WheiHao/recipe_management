@@ -1,8 +1,15 @@
-import type { InventoryItem } from "../models/types";
+import type { InventoryItem, Recipe } from "../models/types";
 import { loadFromStorage, saveToStorage } from "../utils/storage";
 import { addDaysToLocalDate, formatLocalDate } from "../utils/expiry";
 
 const INVENTORY_STORAGE_KEY = "kitchen_inventory";
+
+type MissingRecipeIngredient = {
+  ingredientId: string;
+  name: string;
+  quantity?: number;
+  unit?: string;
+};
 
 export function getInventory(): InventoryItem[] {
   const storedInventory = loadFromStorage<unknown>(INVENTORY_STORAGE_KEY, []);
@@ -105,6 +112,123 @@ export function updateInventoryItem(
 export function deleteInventoryItem(id: string): InventoryItem[] {
   const inventory = getInventory();
   const updatedInventory = inventory.filter((item) => item.id !== id);
+
+  saveInventory(updatedInventory);
+
+  return updatedInventory;
+}
+
+export function canCookRecipe(
+  recipe: Recipe,
+  inventory: InventoryItem[]
+): boolean {
+  return recipe.ingredients
+    .filter((ingredient) => ingredient.required)
+    .every((recipeIngredient) => {
+      const matchingInventoryItems = inventory.filter(
+        (item) => item.ingredientId === recipeIngredient.ingredientId
+      );
+
+      if (matchingInventoryItems.length === 0) {
+        return false;
+      }
+
+      if (recipeIngredient.quantity === undefined) {
+        return true;
+      }
+
+      const availableQuantity = matchingInventoryItems.reduce(
+        (total, item) => total + item.quantity,
+        0
+      );
+
+      return availableQuantity >= recipeIngredient.quantity;
+    });
+}
+
+export function getMissingRequiredIngredientsForRecipe(
+  recipe: Recipe,
+  inventory: InventoryItem[]
+): MissingRecipeIngredient[] {
+  return recipe.ingredients
+    .filter((ingredient) => ingredient.required)
+    .flatMap((recipeIngredient) => {
+      const matchingInventoryItems = inventory.filter(
+        (item) => item.ingredientId === recipeIngredient.ingredientId
+      );
+      const availableQuantity = matchingInventoryItems.reduce(
+        (total, item) => total + item.quantity,
+        0
+      );
+
+      if (recipeIngredient.quantity === undefined) {
+        return matchingInventoryItems.length === 0
+          ? [
+              {
+                ingredientId: recipeIngredient.ingredientId,
+                name: recipeIngredient.name,
+                unit: recipeIngredient.unit
+              }
+            ]
+          : [];
+      }
+
+      const missingQuantity = recipeIngredient.quantity - availableQuantity;
+
+      if (missingQuantity <= 0) {
+        return [];
+      }
+
+      return [
+        {
+          ingredientId: recipeIngredient.ingredientId,
+          name: recipeIngredient.name,
+          quantity: missingQuantity,
+          unit: recipeIngredient.unit
+        }
+      ];
+    });
+}
+
+export function consumeInventoryForRecipe(recipe: Recipe): InventoryItem[] {
+  const updatedInventory = [...getInventory()];
+  const requiredIngredients = recipe.ingredients.filter(
+    (ingredient) => ingredient.required
+  );
+
+  for (const recipeIngredient of requiredIngredients) {
+    if (recipeIngredient.quantity === undefined) {
+      continue;
+    }
+
+    let remainingQuantityToConsume = recipeIngredient.quantity;
+
+    for (let index = 0; index < updatedInventory.length; index += 1) {
+      const inventoryItem = updatedInventory[index];
+
+      if (
+        inventoryItem.ingredientId !== recipeIngredient.ingredientId ||
+        remainingQuantityToConsume <= 0
+      ) {
+        continue;
+      }
+
+      const updatedQuantity =
+        inventoryItem.quantity - remainingQuantityToConsume;
+
+      if (updatedQuantity > 0) {
+        updatedInventory[index] = {
+          ...inventoryItem,
+          quantity: updatedQuantity
+        };
+        remainingQuantityToConsume = 0;
+      } else {
+        remainingQuantityToConsume -= inventoryItem.quantity;
+        updatedInventory.splice(index, 1);
+        index -= 1;
+      }
+    }
+  }
 
   saveInventory(updatedInventory);
 

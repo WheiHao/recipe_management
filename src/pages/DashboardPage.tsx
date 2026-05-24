@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
-import { sampleRecipes } from "../data/sampleRecipes";
 import type { InventoryItem, RecipeRecommendation } from "../models/types";
 import { getInventory } from "../services/inventoryService";
+import { getAllRecipes } from "../services/recipeService";
 import { matchRecipes } from "../services/recommendationService";
 import { getExpiryLabel, isExpiringSoon } from "../utils/expiry";
 
@@ -21,7 +21,7 @@ function DashboardPage() {
     );
     const currentRecommendations = matchRecipes(
       currentInventory,
-      sampleRecipes
+      getAllRecipes()
     ).slice(0, 3);
 
     setInventory(currentInventory);

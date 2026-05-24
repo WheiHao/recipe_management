@@ -28,6 +28,7 @@ export type RecipeIngredient = {
 export type Recipe = {
   id: string;
   name: string;
+  source?: "sample" | "custom";
   cookingTimeMinutes?: number;
   difficulty?: "easy" | "medium" | "hard";
   ingredients: RecipeIngredient[];
@@ -41,4 +42,14 @@ export type RecipeRecommendation = {
   availableIngredients: string[];
   missingIngredients: string[];
   usesExpiringItems: string[];
+};
+
+export type ShoppingListItem = {
+  id: string;
+  ingredientId: string;
+  name: string;
+  quantity?: number;
+  unit?: string;
+  checked: boolean;
+  createdAt: string;
 };

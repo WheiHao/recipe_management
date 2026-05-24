@@ -72,7 +72,7 @@ p {
   bottom: 0;
   z-index: 10;
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(5, 1fr);
   width: 100%;
   max-width: 480px;
   height: 60px;
@@ -86,7 +86,7 @@ p {
   border: none;
   border-radius: 0;
   background: transparent;
-  font-size: 14px;
+  font-size: 13px;
 }
 
 .bottom-nav button.active {
@@ -97,6 +97,7 @@ p {
 .inventory-list,
 .recipe-list,
 .recommendation-list,
+.shopping-list,
 .dashboard-card-list {
   display: grid;
   gap: 12px;
@@ -105,7 +106,9 @@ p {
 .inventory-card,
 .recipe-card,
 .recommendation-card,
+.shopping-list-card,
 .dashboard-card,
+.recipe-form,
 .add-inventory-form {
   border: 1px solid #ddd;
   border-radius: 12px;
@@ -123,21 +126,56 @@ p {
 .inventory-card p,
 .recipe-card p,
 .recommendation-card p,
+.shopping-list-card p,
 .dashboard-card p {
   margin: 4px 0;
 }
 
-.add-inventory-form {
+.shopping-list-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.shopping-list-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  min-width: 0;
+}
+
+.shopping-list-item input {
+  width: 18px;
+  height: 18px;
+  flex: 0 0 auto;
+}
+
+.shopping-list-item span {
+  min-width: 0;
+}
+
+.shopping-list-quantity {
+  display: block;
+  margin-top: 2px;
+  color: #666;
+  font-size: 14px;
+}
+
+.add-inventory-form,
+.recipe-form {
   display: grid;
   gap: 12px;
   margin-bottom: 16px;
 }
 
-.add-inventory-form h2 {
+.add-inventory-form h2,
+.recipe-form h2 {
   margin: 0;
 }
 
 .add-inventory-form label,
+.recipe-form label,
 .inventory-edit-form label {
   display: grid;
   gap: 4px;
@@ -146,6 +184,8 @@ p {
 
 .add-inventory-form input,
 .add-inventory-form select,
+.recipe-form input,
+.recipe-form select,
 .inventory-edit-form input {
   width: 100%;
   min-height: 40px;
@@ -174,6 +214,42 @@ p {
 
 .recipe-details {
   margin-top: 12px;
+}
+
+.recipe-form-section {
+  display: grid;
+  gap: 10px;
+}
+
+.recipe-form-section h3 {
+  margin: 0;
+}
+
+.recipe-ingredient-row,
+.recipe-step-row {
+  display: grid;
+  gap: 8px;
+}
+
+.recipe-form .inline-checkbox {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.recipe-form .inline-checkbox input {
+  width: 18px;
+  min-height: 18px;
+}
+
+.recipe-source-label {
+  display: inline-block;
+  padding: 2px 8px;
+  border: 1px solid #ddd;
+  border-radius: 999px;
+  background: #f7f7f7;
+  color: #555;
+  font-size: 13px;
 }
 
 .recipe-details h3 {

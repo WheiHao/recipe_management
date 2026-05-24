@@ -3,8 +3,14 @@ import DashboardPage from "./pages/DashboardPage";
 import InventoryPage from "./pages/InventoryPage";
 import RecipesPage from "./pages/RecipesPage";
 import RecommendationsPage from "./pages/RecommendationsPage";
+import ShoppingListPage from "./pages/ShoppingListPage";
 
-type AppPage = "dashboard" | "inventory" | "recipes" | "recommendations";
+type AppPage =
+  | "dashboard"
+  | "inventory"
+  | "recipes"
+  | "recommendations"
+  | "shopping";
 
 const navItems: Array<{
   id: AppPage;
@@ -13,7 +19,8 @@ const navItems: Array<{
   { id: "dashboard", label: "首页" },
   { id: "inventory", label: "库存" },
   { id: "recipes", label: "菜谱" },
-  { id: "recommendations", label: "推荐" }
+  { id: "recommendations", label: "推荐" },
+  { id: "shopping", label: "购物" }
 ];
 
 function renderPage(activePage: AppPage) {
@@ -26,6 +33,8 @@ function renderPage(activePage: AppPage) {
       return <RecipesPage />;
     case "recommendations":
       return <RecommendationsPage />;
+    case "shopping":
+      return <ShoppingListPage />;
   }
 }
 

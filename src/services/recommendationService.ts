@@ -29,8 +29,18 @@ export function matchRecipes(
       const matchingInventoryItems = inventoryByIngredientId.get(
         recipeIngredient.ingredientId
       );
+      const availableQuantity =
+        matchingInventoryItems?.reduce((total, item) => total + item.quantity, 0) ??
+        0;
+      const hasEnoughQuantity =
+        recipeIngredient.quantity === undefined ||
+        availableQuantity >= recipeIngredient.quantity;
 
-      if (matchingInventoryItems && matchingInventoryItems.length > 0) {
+      if (
+        matchingInventoryItems &&
+        matchingInventoryItems.length > 0 &&
+        hasEnoughQuantity
+      ) {
         availableIngredients.push(recipeIngredient.name);
 
         if (
